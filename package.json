@@ -25,7 +25,8 @@
     "test:debug": "karma start --no-single-run --browsers Chrome",
     "test:browsers": "karma start --browsers Chrome,Firefox,Safari",
     "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
-    "watch:library": "gulp watch"
+    "watch:library": "gulp watch",
+    "dist": "npm version patch && npm run build && cd dist && npm publish"
   },
   "license": "Apache-2.0",
   "contributors": [
