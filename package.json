@@ -64,7 +64,7 @@
     "@angular/core": "4.0.1",
     "@angular/http": "4.0.1",
     "lodash": "4.17.4",
-    "ngx-base": "1.2.9",
+    "ngo-base": "0.0.5",
     "rxjs": "5.2.0"
   },
   "peerDependencies": {},
