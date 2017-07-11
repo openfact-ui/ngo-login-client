@@ -128,7 +128,7 @@ describe('Service: Authentication service', () => {
     authenticationService.logIn(tokenJson);
   });
 
-  it('Openshift token processing', (done) => {
+  it('Microsoft token processing', (done) => {
     // given
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
@@ -145,7 +145,7 @@ describe('Service: Authentication service', () => {
       authenticationService.getMicrosoftToken().subscribe(output => {
         // then
         expect(output == token.access_token);
-        expect(localStorage.getItem('microsoft-v3_token')).toBe(token.access_token);
+        expect(localStorage.getItem('microsoft_token')).toBe(token.access_token);
         authenticationService.logout();
         done();
       });
@@ -155,7 +155,7 @@ describe('Service: Authentication service', () => {
     authenticationService.logIn(tokenJson);
   });
 
-  it('Openshift token processing - not logged in', async(() => {
+  it('Microsoft token processing - not logged in', async(() => {
       mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
@@ -168,7 +168,7 @@ describe('Service: Authentication service', () => {
 
     authenticationService.getMicrosoftToken().subscribe(output => {
       expect(output == '');
-      expect(localStorage.getItem('microsoft-v3_token')).toBeNull();
+      expect(localStorage.getItem('microsoft_token')).toBeNull();
     });
   }));
 });

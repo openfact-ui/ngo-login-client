@@ -41,7 +41,7 @@ def updateDownstreamProjects(v){
     pushPackageJSONChangePR{
         propertyName = 'ngo-login-client'
         projects = [
-                'fabric8-ui/fabric8-npm-dependencies'
+                'openfact-ui/openfact-npm-dependencies'
         ]
         version = v
         containerName = 'ui'

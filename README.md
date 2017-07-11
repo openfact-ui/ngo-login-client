@@ -8,7 +8,7 @@ Auth and User services for Angular v2 and up
 This library requires a server side component to perform the authentication. The one we 
 using is located [here](https://github.com/almighty/almighty-core) and it uses 
 [keycloak](https://github.com/keycloak/keycloak). You can see how it is used in the 
-front-end [here](https://github.com/fabric8io/fabric8-ui).
+front-end [here](https://github.com/fabric8io/openfact-ui).
 
 The system we build is composed of several components existing in separate repos but
 still needing access to common information, like who is logged. These services were 
@@ -90,7 +90,7 @@ build manually, instead you should let the CD pipeline do a semantic release.
 ### Development
 
 To build ngo-login-client as an npm library and embed it into a webapp such as
-fabric8-ui, you should:
+openfact-ui, you should:
 
 1. Run `npm run watch:library` in this directory. This will build ngo-login-client as
 a library and then set up a watch task to rebuild any ts, html and scss files you
@@ -103,7 +103,7 @@ enabled. To do this using a typical Angular Webpack setup, such as the one based
 just run `npm start. You will have access to both JS sourcemaps and SASS sourcemaps if your webapp
 is properly setup.
 
-Note that `fabric8-ui` is setup to do reloading and sourcemaps automatically when you
+Note that `openfact-ui` is setup to do reloading and sourcemaps automatically when you
 run `npm start`.
 
 

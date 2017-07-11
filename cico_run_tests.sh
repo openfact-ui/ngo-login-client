@@ -17,14 +17,14 @@ yum -y install \
 service docker start
 
 # Build builder image
-docker build -t fabric8-ui-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=fabric8-ui-builder -e "API_URL=http://demo.api.almighty.io/api/" -t -v $(pwd)/dist:/dist:Z fabric8-ui-builder
+docker build -t openfact-ui-builder -f Dockerfile.builder .
+mkdir -p dist && docker run --detach=true --name=openfact-ui-builder -e "API_URL=http://demo.api.almighty.io/api/" -t -v $(pwd)/dist:/dist:Z openfact-ui-builder
 
 # Build almighty-ui
-docker exec fabric8-ui-builder npm install
+docker exec openfact-ui-builder npm install
 
 ## Exec unit tests
-docker exec fabric8-ui-builder ./run_unit_tests.sh
+docker exec openfact-ui-builder ./run_unit_tests.sh
 
 if [ $? -eq 0 ]; then
   echo 'CICO: unit tests OK'
@@ -34,4 +34,4 @@ else
 fi
 
 ## Exec functional tests
-docker exec fabric8-ui-builder ./run_functional_tests.sh
+docker exec openfact-ui-builder ./run_functional_tests.sh
