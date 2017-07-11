@@ -2,7 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger } from 'ngo-base';
 
 import { AUTH_API_URL } from '../shared/auth-api';
 import { UserService } from './user.service';

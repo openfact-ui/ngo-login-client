@@ -3,7 +3,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { Broadcaster } from 'ngx-base';
+import { Broadcaster } from 'ngo-base';
 
 import { SSO_API_URL } from '../shared/sso-api';
 import { AuthenticationService } from './authentication.service';

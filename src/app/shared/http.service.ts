@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 
-import { Broadcaster } from 'ngx-base';
+import { Broadcaster } from 'ngo-base';
 
 @Injectable()
 export class HttpService extends Http {

@@ -9,7 +9,7 @@ import {
 } from 'rxjs';
 
 import { cloneDeep } from 'lodash';
-import { Broadcaster, Logger } from 'ngx-base';
+import { Broadcaster, Logger } from 'ngo-base';
 
 import { AUTH_API_URL } from '../shared/auth-api';
 import { User } from './user';
