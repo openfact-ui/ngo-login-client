@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 var appSrc = 'src';
 var libraryDist = 'dist';
 var watchDist = 'dist-watch';
-var globalExcludes = [ '!./**/examples/**', '!./**/examples' ]
+var globalExcludes = [ '!./**/examples/**', '!./**/examples' ];
 
 /**
  * FUNCTION LIBRARY
