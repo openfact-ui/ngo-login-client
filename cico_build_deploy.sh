@@ -22,7 +22,7 @@ service docker start
 
 # Build builder image
 docker build -t ngo-login-client-builder -f Dockerfile.builder .
-mkdir -p dist && docker run --detach=true --name=ngo-login-client-builder -e "FABRIC8_WIT_API_URL=http://api.microsoft.io/api/" -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z ngo-login-client-builder
+mkdir -p dist && docker run --detach=true --name=ngo-login-client-builder -e "OPENFACT_SYNC_API_URL=http://api.microsoft.io/api/" -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -t -v $(pwd)/dist:/dist:Z ngo-login-client-builder
 
 # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
 docker exec ngo-login-client-builder git checkout master

@@ -1,5 +1,5 @@
 FROM centos:7
-MAINTAINER "Konrad Kleine <kkleine@redhat.com>"
+MAINTAINER "Carlos Feria <carlosthe19916@sistcoop.com>"
 ENV LANG=en_US.utf8
 
 # load the gpg keys
@@ -33,19 +33,19 @@ RUN yum install -y bzip2 git fontconfig \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
   && yum clean all
 
-ENV FABRIC8_USER_NAME=fabric8
+ENV OPENFACT_USER_NAME=openfact
 
-RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
+RUN useradd --user-group --create-home --shell /bin/false ${OPENFACT_USER_NAME}
 
-ENV HOME=/home/${FABRIC8_USER_NAME}
+ENV HOME=/home/${OPENFACT_USER_NAME}
 
 ENV WORKSPACE=$HOME/ngo-login-client
 RUN mkdir $WORKSPACE
 
 COPY . $WORKSPACE
-RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
+RUN chown -R ${OPENFACT_USER_NAME}:${OPENFACT_USER_NAME} $HOME/*
 
-USER ${FABRIC8_USER_NAME}
+USER ${OPENFACT_USER_NAME}
 WORKDIR $WORKSPACE/
 
 VOLUME /dist
