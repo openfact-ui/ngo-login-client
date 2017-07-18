@@ -39,7 +39,7 @@ export class AuthenticationService {
     this.keycloak.init({});
   }
 
-  logIn(options?: string): boolean {
+  logIn(options?: any): boolean {
     Keycloak.login(options);
 
     this.onLogIn();
