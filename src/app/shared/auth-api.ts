@@ -1,3 +1,3 @@
-import { InjectionToken } from '@angular/core';
+import { OpaqueToken } from '@angular/core';
 
-export let AUTH_API_URL = new InjectionToken<string>('auth.api.url');
+export let AUTH_API_URL = new OpaqueToken('auth.api.url');

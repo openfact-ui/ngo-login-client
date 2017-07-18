@@ -1,3 +1,3 @@
-import { InjectionToken } from '@angular/core';
+import { OpaqueToken } from '@angular/core';
 
-export let SSO_API_URL = new InjectionToken<string>('sso.api.url');
+export let SSO_API_URL = new OpaqueToken('sso.api.url');

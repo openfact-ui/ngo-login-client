@@ -1,3 +1,3 @@
-import { InjectionToken } from '@angular/core';
+import { OpaqueToken } from '@angular/core';
 
-export let REALM = new InjectionToken<string>('realm');
+export let REALM = new OpaqueToken('realm');
