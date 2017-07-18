@@ -43,32 +43,29 @@ export class UserService {
   private usersUrl: string;  // URL to web api
   private searchUrl: string;
 
-  constructor(private http: Http,
-              private logger: Logger,
-              broadcaster: Broadcaster,
-              @Inject(AUTH_API_URL) apiUrl: string) {
+  constructor(
+    private http: Http,
+    private logger: Logger,
+    broadcaster: Broadcaster,
+    @Inject(AUTH_API_URL) apiUrl: string) {
     this.userUrl = apiUrl + 'user';
     this.usersUrl = apiUrl + 'users';
     this.searchUrl = apiUrl + 'search';
     this.loggedInUser = Observable.merge(
-      broadcaster.on('loggedin')
-        .map(val => 'loggedIn'),
-      broadcaster.on('logout')
-        .map(val => 'loggedOut'),
-      broadcaster.on('authenticationError')
-        .map(val => 'authenticationError')
-    )
-      .switchMap(val => {
-        // If it's a login event, then we need to retreive the user's details
-        if (val === 'loggedIn') {
-          return this.http
-            .get(this.userUrl, { headers: this.headers })
-            .map(response => cloneDeep(response.json().data as User));
-        } else {
-          // Otherwise, we clear the user
-          return Observable.of({} as User);
-        }
-      })
+      broadcaster.on('loggedin').map(val => 'loggedIn'),
+      broadcaster.on('logout').map(val => 'loggedOut'),
+      broadcaster.on('authenticationError').map(val => 'authenticationError')
+    ).switchMap(val => {
+      // If it's a login event, then we need to retreive the user's details
+      if (val === 'loggedIn') {
+        return this.http
+          .get(this.userUrl, { headers: this.headers })
+          .map(response => cloneDeep(response.json().data as User));
+      } else {
+        // Otherwise, we clear the user
+        return Observable.of({} as User);
+      }
+    })
       // TODO remove this
       .do(user => this.userData = user)
       // In order to ensure any future subscribers get the currently user
@@ -108,7 +105,7 @@ export class UserService {
    * Get users by a search string
    */
   getUsersBySearchString(search: string): Observable<User[]> {
-    if (search && search !== "") {
+    if (search && search !== '') {
       return this.http
         .get(this.searchUrl + '/users?q=' + search, { headers: this.headers })
         .map(response => {
@@ -170,7 +167,7 @@ export class UserService {
       .get(`${this.usersUrl}?filter[username]=${username}`, { headers: this.headers })
       .map(response => {
         return response.json().data as User[];
-      })
+      });
   }
 
   /**
