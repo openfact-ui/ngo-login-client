@@ -55,7 +55,15 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    if (this.isAuthenticated !== undefined && this.isAuthenticated != null) {
+      console.log('Previous authentication loaded:' + this.isAuthenticated);
+      return this.isAuthenticated;
+    } else {
+      console.log('No previous authentication found. Initializing again...');
+      this.keycloak.init({});
+      console.log('Authentication initialized. ' + this.isAuthenticated);
+      return this.isAuthenticated;
+    }
   }
 
   getToken() {
