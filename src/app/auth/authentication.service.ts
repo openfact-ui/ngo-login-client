@@ -36,7 +36,6 @@ export class AuthenticationService {
 
       console.log('APP: authentication status changed...');
     });
-    this.keycloak.init({});
   }
 
   logIn(options?: any): boolean {
