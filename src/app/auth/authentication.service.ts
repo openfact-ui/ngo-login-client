@@ -55,7 +55,7 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    if (this.isAuthenticated !== undefined && this.isAuthenticated != null) {
+    if (this.isAuthenticated) {
       console.log('Previous authentication loaded:' + this.isAuthenticated);
       return this.isAuthenticated;
     } else {
