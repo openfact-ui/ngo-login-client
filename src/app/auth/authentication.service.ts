@@ -59,17 +59,15 @@ export class AuthenticationService {
       if (this.isAuthenticated === true) {
         let token = this.parsedToken;
 
-        console.log('tokenParsed', Keycloak.tokenParsed);
-        console.log('accessToken', Keycloak.accessToken);
-
-        this.setupRefreshTimer(token.expires_in);
+        let expiresIn = Keycloak.tokenParsed['exp'] - (new Date().getTime() / 1000) + Keycloak.timeSkew;
+        this.setupRefreshTimer(expiresIn);
 
         // make sure old tokens are cleared out when we login again
         localStorage.removeItem(this.google + '_token');
         localStorage.removeItem(this.microsoft + '_token');
 
         // kick off initial token refresh
-        this.refreshTokens.next(token);
+        this.refreshTokens.next({ 'access_token': this.parsedToken } as Token);
 
         this.onLogIn();
       }
