@@ -59,8 +59,8 @@ export class AuthenticationService {
       if (this.isAuthenticated === true) {
         let token = this.parsedToken;
 
-        console.log("tokenParsed", this.Keycloak.tokenParsed);
-        console.log("accessToken", this.Keycloak.accessToken);
+        console.log('tokenParsed', Keycloak.tokenParsed);
+        console.log('accessToken', Keycloak.accessToken);
 
         this.setupRefreshTimer(token.expires_in);
 
