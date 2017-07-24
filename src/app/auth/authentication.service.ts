@@ -67,7 +67,7 @@ export class AuthenticationService {
         localStorage.removeItem(this.microsoft + '_token');
 
         // kick off initial token refresh
-        this.refreshTokens.next({ 'access_token': this.parsedToken } as Token);
+        this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
 
         this.onLogIn();
       }
@@ -94,7 +94,7 @@ export class AuthenticationService {
     if (this.isAuthenticated) {
       if (!this.clearTimeoutId) {
         // kick off initial token refresh
-        this.refreshTokens.next({ 'access_token': this.parsedToken } as Token);
+        this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
         this.setupRefreshTimer(15);
       }
       return true;
