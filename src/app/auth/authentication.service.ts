@@ -1,5 +1,9 @@
+import { Token } from '../user/token';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
 import { Injectable, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Broadcaster } from 'ngo-base';
 
@@ -8,16 +12,33 @@ import { SSO_API_URL } from '../shared/sso-api';
 import { REALM } from '../shared/realm-token';
 import { Keycloak } from '@ebondu/angular2-keycloak';
 
+export interface ProcessTokenResponse {
+  (response: Response): Token;
+}
+
 @Injectable()
 export class AuthenticationService {
 
+  // Tokens
+  readonly google = 'google';
+  readonly microsoft = 'microsoft';
+  public googleToken: Observable<string>;
+  public microsoftToken: Observable<string>;
+
+  // Keycloak utils
   public parsedToken: any;
+  public accessToken: string;
   public isAuthenticated: boolean;
   public profile: any;
 
   private apiUrl: string;
   private ssoUrl: string;
   private realm: string;
+
+  // Tokens config
+  private refreshInterval: number;
+  private clearTimeoutId: any;
+  private refreshTokens: Subject<Token> = new Subject();
 
   constructor(
     private broadcaster: Broadcaster,
@@ -33,16 +54,26 @@ export class AuthenticationService {
     Keycloak.authenticatedObs.subscribe(auth => {
       this.isAuthenticated = auth;
       this.parsedToken = Keycloak.tokenParsed;
+      this.accessToken = Keycloak.accessToken;
 
-      console.log('APP: authentication status changed...');
+      if (this.isAuthenticated === true) {
+        // make sure old tokens are cleared out when we login again
+        localStorage.removeItem(this.google + '_token');
+        localStorage.removeItem(this.microsoft + '_token');
+
+        // kick off initial token refresh
+        this.refreshTokens.next(this.parsedToken);
+
+        this.onLogIn();
+      }
     });
+
+    this.googleToken = this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
+    this.microsoftToken = this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
   }
 
-  logIn(options?: any): boolean {
+  logIn(options?: any): void {
     Keycloak.login(options);
-
-    this.onLogIn();
-    return true;
   }
 
   onLogIn() {
@@ -50,8 +81,8 @@ export class AuthenticationService {
   }
 
   logout(options?: any) {
-    Keycloak.logout(options);
     this.broadcaster.broadcast('logout', 1);
+    Keycloak.logout(options);
   }
 
   isLoggedIn(): boolean {
@@ -59,7 +90,43 @@ export class AuthenticationService {
   }
 
   getToken() {
-    if (this.isLoggedIn()) return this.parsedToken;
+    if (this.isLoggedIn()) return this.accessToken;
+  }
+
+  getGoogleToken(): Observable<string> {
+    if (localStorage.getItem(this.google + '_token')) {
+      return Observable.of(localStorage.getItem(this.google + '_token'));
+    }
+    return this.googleToken;
+  }
+
+  getMicrosoftToken(): Observable<string> {
+    if (localStorage.getItem(this.microsoft + '_token')) {
+      return Observable.of(localStorage.getItem(this.microsoft + '_token'));
+    }
+    return this.microsoftToken;
+  }
+
+  private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
+    let res = this.refreshTokens.switchMap(token => {
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
+      headers.set('Authorization', `Bearer ${token.access_token}`);
+      let options = new RequestOptions({ headers: headers });
+      return this.http.get(tokenUrl, options)
+        .map(response => processToken(response))
+        .catch(response => {
+          if (response.status === 400) {
+            this.broadcaster.broadcast('noFederatedToken', res);
+          }
+          return Observable.of({} as Token);
+        })
+        .do(token => localStorage.setItem(broker + '_token', token.access_token))
+        .map(t => t.access_token);
+    }).publishReplay(1);
+
+    res.connect();
+    return res;
   }
 
 }
