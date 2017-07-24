@@ -1,6 +1,6 @@
 {
   "name": "ngo-login-client",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Auth and User services for Angular v2 and up. Requires backend REST service.",
   "main": "bundles/login.umd.js",
   "module": "index.js",
