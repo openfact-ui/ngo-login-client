@@ -151,6 +151,10 @@ export class AuthenticationService {
       let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
       headers.set('Authorization', `Bearer ${token.access_token}`);
       let options = new RequestOptions({ headers: headers });
+
+      console.log('options to send token', options);
+      console.log('token', token);
+
       return this.http.get(tokenUrl, options)
         .map(response => processToken(response))
         .catch(response => {
