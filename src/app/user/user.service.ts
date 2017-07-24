@@ -28,16 +28,6 @@ export class UserService {
    */
   public loggedInUser: ConnectableObservable<User>;
 
-  /**
-   * @deprecated since v0.4.4. Use {@link #loggedInUser} instead.
-   */
-  private userData: User = {} as User;
-
-  /**
-   * @deprecated since v0.4.4. No replacement method is provided.
-   */
-  private allUserData: User[] = [];
-
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private userUrl: string;  // URL to web api
   private usersUrl: string;  // URL to web api
@@ -66,8 +56,6 @@ export class UserService {
         return Observable.of({} as User);
       }
     })
-      // TODO remove this
-      .do(user => this.userData = user)
       // In order to ensure any future subscribers get the currently user
       // we use a replay subject of size 1
       .multicast(() => new ReplaySubject(1));
@@ -116,46 +104,6 @@ export class UserService {
   }
 
   /**
-   * @deprecated since v0.4.4. Use {@link #loggedInUser} instead.
-   */
-  getSavedLoggedInUser(): User {
-    return this.userData;
-  }
-
-  /**
-   * @deprecated since v0.4.4. No replacement is provided.
-   */
-  getLocallySavedUsers(): User[] {
-    return this.allUserData;
-  }
-
-  /**
-   * @deprecated since v0.4.4. Use {@link #loggedInUser} instead.
-   * Get currently logged in user
-   *
-   * @returns Observable<User>
-   */
-  getUser(): Observable<User> {
-    return this.loggedInUser;
-  }
-
-  /**
-   * @deprecated since v0.4.4. No replacement is provided.
-   * Get all users
-   *
-   * @returns Observable<User[]>
-   */
-  getAllUsers(): Observable<User[]> {
-    return this.http
-      .get(this.usersUrl, { headers: this.headers })
-      .map(response => {
-        return response.json().data as User[];
-      })
-      // TODO remove this
-      .do(val => this.allUserData = val);
-  }
-
-  /**
    *
    * Filter users by username
    *
@@ -170,11 +118,4 @@ export class UserService {
       });
   }
 
-  /**
-   * @deprecated since v0.4.4. No replacement is provided.
-   *
-   */
-  resetUser(): void {
-    this.userData = {} as User;
-  }
 }
