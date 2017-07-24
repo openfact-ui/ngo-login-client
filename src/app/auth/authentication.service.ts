@@ -141,7 +141,7 @@ export class AuthenticationService {
 
   refreshToken() {
     if (this.isLoggedIn()) {
-      this.refreshTokens.next(this.parsedToken);
+      this.refreshTokens.next(({ 'access_token': this.accessToken } as Token));
     }
   }
 
