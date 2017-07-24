@@ -57,12 +57,16 @@ export class AuthenticationService {
       this.accessToken = Keycloak.accessToken;
 
       if (this.isAuthenticated === true) {
+        let token = this.parsedToken;
+
+        this.setupRefreshTimer(token.expires_in);
+
         // make sure old tokens are cleared out when we login again
         localStorage.removeItem(this.google + '_token');
         localStorage.removeItem(this.microsoft + '_token');
 
         // kick off initial token refresh
-        this.refreshTokens.next(this.parsedToken);
+        this.refreshTokens.next(token);
 
         this.onLogIn();
       }
@@ -86,7 +90,15 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    if (this.isAuthenticated) {
+      if (!this.clearTimeoutId) {
+        // kick off initial token refresh
+        this.refreshTokens.next({ 'access_token': this.parsedToken } as Token);
+        this.setupRefreshTimer(15);
+      }
+      return true;
+    }
+    return false;
   }
 
   getToken() {
@@ -107,8 +119,33 @@ export class AuthenticationService {
     return this.microsoftToken;
   }
 
+  setupRefreshTimer(refreshInSeconds: number) {
+    if (!this.clearTimeoutId) {
+      // refresh should be required to be less than ten minutes measured in seconds
+      let tenMinutes = 60 * 10;
+      if (refreshInSeconds > tenMinutes) {
+        refreshInSeconds = tenMinutes;
+      }
+      let refreshInMs = Math.round(refreshInSeconds * .9) * 1000;
+      console.log('Refreshing token in: ' + refreshInMs + ' milliseconds.');
+      this.refreshInterval = refreshInMs;
+      if (process.env.ENV !== 'inmemory') {
+        // setTimeout() uses a 32 bit int to store the delay. So the max value allowed is 2147483647
+        // The bigger number will cause immediate refreshing
+        // but since we refresh in 10 minutes or in refreshInSeconds whatever is sooner we are good
+        this.clearTimeoutId = setTimeout(() => this.refreshToken(), refreshInMs);
+      }
+    }
+  }
+
+  refreshToken() {
+    if (this.isLoggedIn()) {
+      this.refreshTokens.next(this.parsedToken);
+    }
+  }
+
   private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
-    let res = this.refreshTokens.switchMap(token => {
+    let res = this.refreshTokens.switchMap((token) => {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
       headers.set('Authorization', `Bearer ${token.access_token}`);
@@ -121,7 +158,7 @@ export class AuthenticationService {
           }
           return Observable.of({} as Token);
         })
-        .do(token => localStorage.setItem(broker + '_token', token.access_token))
+        .do((token) => localStorage.setItem(broker + '_token', token.access_token))
         .map(t => t.access_token);
     }).publishReplay(1);
 
