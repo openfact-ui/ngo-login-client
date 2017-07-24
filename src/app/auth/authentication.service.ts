@@ -147,7 +147,7 @@ export class AuthenticationService {
   private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
     let res = this.refreshTokens.switchMap((token) => {
       let headers = new Headers({ 'Content-Type': 'application/json' });
-      let tokenUrl = this.ssoUrl + `realms/${this.realm}/broker/${broker}/token`;
+      let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
       headers.set('Authorization', `Bearer ${token.access_token}`);
       let options = new RequestOptions({ headers: headers });
       return this.http.get(tokenUrl, options)
