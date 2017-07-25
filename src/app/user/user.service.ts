@@ -46,8 +46,6 @@ export class UserService {
       broadcaster.on('logout').map(val => 'loggedOut'),
       broadcaster.on('authenticationError').map(val => 'authenticationError')
     ).switchMap(val => {
-      console.log('ooooooooooooooooooooooooooooooooooooooooooooooooo');
-
       // If it's a login event, then we need to retreive the user's details
       if (val === 'loggedIn') {
         return this.http
