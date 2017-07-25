@@ -57,9 +57,8 @@ export class AuthenticationService {
       this.accessToken = Keycloak.accessToken;
 
       console.log('APP: authentication status changed...');
-      console.log(auth);
+
       if (this.isAuthenticated) {
-        console.log('entro');
         let token = this.parsedToken;
 
         let expiresIn = Keycloak.tokenParsed['exp'] - (new Date().getTime() / 1000) + Keycloak.timeSkew;
@@ -85,6 +84,7 @@ export class AuthenticationService {
   }
 
   onLogIn() {
+    console.log('User have just loggedin');
     this.broadcaster.broadcast('loggedin', 1);
   }
 
