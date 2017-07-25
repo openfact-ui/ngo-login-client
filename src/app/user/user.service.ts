@@ -49,7 +49,7 @@ export class UserService {
       // If it's a login event, then we need to retreive the user's details
       if (val === 'loggedIn') {
         return this.http
-          .get(this.userUrl, { headers: this.headers })
+          .get(this.userUrl, { headers: this.headers, withCredentials: true })
           .map(response => cloneDeep(response.json().data as User));
       } else {
         // Otherwise, we clear the user
