@@ -56,7 +56,7 @@ export class AuthenticationService {
       this.parsedToken = Keycloak.tokenParsed;
       this.accessToken = Keycloak.accessToken;
 
-      if (this.isAuthenticated === true) {
+      if (this.isAuthenticated) {
         let token = this.parsedToken;
 
         let expiresIn = Keycloak.tokenParsed['exp'] - (new Date().getTime() / 1000) + Keycloak.timeSkew;
