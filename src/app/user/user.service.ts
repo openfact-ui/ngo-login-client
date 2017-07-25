@@ -38,6 +38,9 @@ export class UserService {
     private logger: Logger,
     broadcaster: Broadcaster,
     @Inject(AUTH_API_URL) apiUrl: string) {
+
+    console.log('USER SERVICE CONSTRUCTOR');
+
     this.userUrl = apiUrl + 'user';
     this.usersUrl = apiUrl + 'users';
     this.searchUrl = apiUrl + 'search';

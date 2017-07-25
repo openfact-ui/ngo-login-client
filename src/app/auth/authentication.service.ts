@@ -47,6 +47,8 @@ export class AuthenticationService {
     @Inject(REALM) realm: string,
     private http: Http,
     private keycloak: Keycloak) {
+    console.log('AUTHENTICATION SERVICE CONSTRUCTOR');
+
     this.apiUrl = apiUrl;
     this.ssoUrl = ssoUrl;
     this.realm = realm;
@@ -71,7 +73,8 @@ export class AuthenticationService {
         // kick off initial token refresh
         this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
 
-        this.onLogIn();
+        console.log('Fire loggedin event');
+        this.broadcaster.broadcast('loggedin', 1);
       }
     });
 
