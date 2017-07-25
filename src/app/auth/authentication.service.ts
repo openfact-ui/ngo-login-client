@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { Token } from '../user/token';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -46,6 +47,7 @@ export class AuthenticationService {
     @Inject(SSO_API_URL) ssoUrl: string,
     @Inject(REALM) realm: string,
     private http: Http,
+    private userService: UserService,
     private keycloak: Keycloak) {
     console.log('AUTHENTICATION SERVICE CONSTRUCTOR');
 
