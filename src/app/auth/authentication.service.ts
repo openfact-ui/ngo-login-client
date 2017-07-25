@@ -49,7 +49,6 @@ export class AuthenticationService {
     private http: Http,
     private userService: UserService,
     private keycloak: Keycloak) {
-    console.log('AUTHENTICATION SERVICE CONSTRUCTOR');
 
     this.apiUrl = apiUrl;
     this.ssoUrl = ssoUrl;
@@ -75,8 +74,7 @@ export class AuthenticationService {
         // kick off initial token refresh
         this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
 
-        console.log('Fire loggedin event');
-        this.broadcaster.broadcast('loggedin', 1);
+        this.onLogIn();
       }
     });
 
