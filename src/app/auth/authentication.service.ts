@@ -108,6 +108,10 @@ export class AuthenticationService {
     return false;
   }
 
+  isOfflineToken(): boolean {
+    return Keycloak.refreshTokenParsed.typ === 'Offline';
+  }
+
   getToken() {
     if (this.isLoggedIn()) return this.accessToken;
   }
