@@ -53,7 +53,15 @@ export class UserService {
         console.log('Load user data');
         return this.http
           .get(this.userUrl, { headers: this.headers, withCredentials: true })
-          .map(response => cloneDeep(response.json().data as User));
+          .map(response => {
+            console.log('response ', response);
+            console.log('response json', response.json());
+            console.log('response json data', response.json().data);
+            console.log('response json data', response.json().data as User);
+            console.log('response json data', cloneDeep(response.json().data as User));
+            const result = cloneDeep(response.json().data as User);
+            return result;
+          });
       } else {
         console.log('Empty user returned');
 
