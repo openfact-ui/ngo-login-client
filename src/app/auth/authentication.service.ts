@@ -116,6 +116,10 @@ export class AuthenticationService {
     if (this.isLoggedIn()) return this.accessToken;
   }
 
+  getRefreshToken(): string {
+    return Keycloak.refreshToken;
+  }
+
   getGoogleToken(): Observable<string> {
     if (localStorage.getItem(this.google + '_token')) {
       return Observable.of(localStorage.getItem(this.google + '_token'));
