@@ -46,19 +46,14 @@ export class UserService {
       broadcaster.on('logout').map(val => 'loggedOut'),
       broadcaster.on('authenticationError').map(val => 'authenticationError')
     ).switchMap(val => {
-      console.log('User Service detected a change ', val);
-
       // If it's a login event, then we need to retreive the user's details
       if (val === 'loggedIn') {
-        console.log('Load user data');
         return this.http
           .get(this.userUrl, { headers: this.headers, withCredentials: true })
           .map(response => {
             return cloneDeep(response.json() as User);
           });
       } else {
-        console.log('Empty user returned');
-
         // Otherwise, we clear the user
         return Observable.of({} as User);
       }
