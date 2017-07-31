@@ -85,10 +85,10 @@ export class AuthenticationService {
         const appInitialization = localStorage.getItem(this.KC_APP_INITIALIZED_OBS);
         localStorage.removeItem(this.KC_APP_INITIALIZED_OBS);
         if (appInitialization) {
-          this.broadcaster.broadcast('appinitialized');
+          this.broadcaster.broadcast('appinitialized', true);
         } else {
           localStorage.setItem(this.KC_APP_INITIALIZED_OBS, 'preInitialization');
-          broadcaster.broadcast('apppreinitialized');
+          broadcaster.broadcast('appinitialized', false);
         }
       }
     });
