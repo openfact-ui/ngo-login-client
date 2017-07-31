@@ -41,6 +41,8 @@ export class AuthenticationService {
   private clearTimeoutId: any;
   private refreshTokens: Subject<Token> = new Subject();
 
+  private KC_APP_INITIALIZED_OBS = 'kc_initialization';
+
   constructor(
     private broadcaster: Broadcaster,
     @Inject(AUTH_API_URL) apiUrl: string,
@@ -75,6 +77,19 @@ export class AuthenticationService {
         this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
 
         this.onLogIn();
+      }
+    });
+
+    Keycloak.initializedObs.subscribe((result) => {
+      if (result) {
+        const appInitialization = localStorage.getItem(this.KC_APP_INITIALIZED_OBS);
+        localStorage.removeItem(this.KC_APP_INITIALIZED_OBS);
+        if (appInitialization) {
+          this.broadcaster.broadcast('appinitialized');
+        } else {
+          localStorage.setItem(this.KC_APP_INITIALIZED_OBS, 'preInitialization');
+          broadcaster.broadcast('apppreinitialized');
+        }
       }
     });
 
