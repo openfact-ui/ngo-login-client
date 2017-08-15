@@ -26,8 +26,6 @@ export class AuthenticationService {
   public googleToken: Observable<string>;
   public microsoftToken: Observable<string>;
 
-  public offlineRefreshToken: string;
-
   // Keycloak utils
   public parsedToken: any;
   public accessToken: string;
@@ -65,18 +63,6 @@ export class AuthenticationService {
 
       console.log('APP: authentication status changed...');
 
-      console.log('******************');
-      console.log('******************');
-      console.log('Keycloak.idTokenParsed');
-      console.log(Keycloak.idTokenParsed);
-      console.log('Keycloak.tokenParsed');
-      console.log(Keycloak.tokenParsed);
-      console.log('Keycloak.refreshTokenParsed');
-      console.log(Keycloak.refreshTokenParsed);
-      console.log('******************');
-
-      alert('stop');
-
       if (this.isAuthenticated) {
         let token = this.parsedToken;
 
@@ -95,18 +81,6 @@ export class AuthenticationService {
     });
 
     Keycloak.initializedObs.subscribe((result) => {
-      console.log('******************');
-      console.log('******************');
-      console.log('Keycloak.idTokenParsed');
-      console.log(Keycloak.idTokenParsed);
-      console.log('Keycloak.tokenParsed');
-      console.log(Keycloak.tokenParsed);
-      console.log('Keycloak.refreshTokenParsed');
-      console.log(Keycloak.refreshTokenParsed);
-      console.log('******************');
-
-      alert('init');
-
       if (result) {
         const appInitialization = localStorage.getItem(this.KC_APP_INITIALIZED_OBS);
         localStorage.removeItem(this.KC_APP_INITIALIZED_OBS);
@@ -119,8 +93,8 @@ export class AuthenticationService {
       }
     });
 
-    this.googleToken = this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
-    this.microsoftToken = this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
+    // this.googleToken = this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
+    // this.microsoftToken = this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
   }
 
   logIn(options?: any): void {
@@ -151,10 +125,6 @@ export class AuthenticationService {
 
   isOfflineToken(): boolean {
     return Keycloak.refreshTokenParsed.typ === 'Offline';
-  }
-
-  getOfflineRefreshToken() {
-    return this.offlineRefreshToken;
   }
 
   getToken() {
