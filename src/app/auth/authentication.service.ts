@@ -65,7 +65,7 @@ export class AuthenticationService {
 
       console.log('APP: authentication status changed...');
 
-      if (Keycloak.refreshTokenParsed.typ === 'Offline') {
+      if (Keycloak.refreshTokenParsed && Keycloak.refreshTokenParsed.typ === 'Offline') {
         this.offlineRefreshToken = Keycloak.refreshToken;
       }
 
