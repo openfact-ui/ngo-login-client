@@ -26,6 +26,8 @@ export class AuthenticationService {
   public googleToken: Observable<string>;
   public microsoftToken: Observable<string>;
 
+  public offlineRefreshToken: string;
+
   // Keycloak utils
   public parsedToken: any;
   public accessToken: string;
@@ -62,6 +64,10 @@ export class AuthenticationService {
       this.accessToken = Keycloak.accessToken;
 
       console.log('APP: authentication status changed...');
+
+      if (Keycloak.refreshTokenParsed.typ === 'Offline') {
+        this.offlineRefreshToken = Keycloak.refreshToken;
+      }
 
       if (this.isAuthenticated) {
         let token = this.parsedToken;
@@ -125,6 +131,10 @@ export class AuthenticationService {
 
   isOfflineToken(): boolean {
     return Keycloak.refreshTokenParsed.typ === 'Offline';
+  }
+
+  getOfflineRefreshToken() {
+    return this.offlineRefreshToken;
   }
 
   getToken() {
