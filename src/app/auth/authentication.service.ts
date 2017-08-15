@@ -67,10 +67,14 @@ export class AuthenticationService {
 
       console.log('******************');
       console.log('******************');
-      console.log('Keycloak.refreshTokenParsed', Keycloak.idTokenParsed);
-      console.log('Keycloak.refreshTokenParsed', Keycloak.tokenParsed);
-      console.log('Keycloak.refreshTokenParsed', Keycloak.refreshTokenParsed);
+      console.log('Keycloak.idTokenParsed');
+      console.log(Keycloak.idTokenParsed);
+      console.log('Keycloak.tokenParsed');
+      console.log(Keycloak.tokenParsed);
+      console.log('Keycloak.refreshTokenParsed');
+      console.log(Keycloak.refreshTokenParsed);
       console.log('******************');
+
       alert('stop');
 
       if (this.isAuthenticated) {
@@ -91,6 +95,18 @@ export class AuthenticationService {
     });
 
     Keycloak.initializedObs.subscribe((result) => {
+      console.log('******************');
+      console.log('******************');
+      console.log('Keycloak.idTokenParsed');
+      console.log(Keycloak.idTokenParsed);
+      console.log('Keycloak.tokenParsed');
+      console.log(Keycloak.tokenParsed);
+      console.log('Keycloak.refreshTokenParsed');
+      console.log(Keycloak.refreshTokenParsed);
+      console.log('******************');
+
+      alert('init');
+
       if (result) {
         const appInitialization = localStorage.getItem(this.KC_APP_INITIALIZED_OBS);
         localStorage.removeItem(this.KC_APP_INITIALIZED_OBS);
