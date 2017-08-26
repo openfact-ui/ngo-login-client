@@ -8,7 +8,7 @@ Auth and User services for Angular v2 and up
 This library requires a server side component to perform the authentication. The one we 
 using is located [here](https://github.com/almighty/almighty-core) and it uses 
 [keycloak](https://github.com/keycloak/keycloak). You can see how it is used in the 
-front-end [here](https://github.com/fabric8io/openfact-ui).
+front-end [here](https://github.com/openfactio/openfact-ui).
 
 The system we build is composed of several components existing in separate repos but
 still needing access to common information, like who is logged. These services were 

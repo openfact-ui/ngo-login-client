@@ -19,7 +19,7 @@ fabric8UINode{
       container('ui'){
           branch = utils.getBranch()
       }
-
+      
       def published
       container('ui'){
         published = pipeline.cd(branch)

@@ -4,9 +4,9 @@ const execSync = require('child_process').execSync;
 const REPO_NAME_RE = /Push {2}URL: https:\/\/github\.com\/.*\/(.*)\.git/;
 
 function getWebpackConfigModule() {
-  if (helpers.hasProcessFlag('google-dev')) {
+  if (helpers.hasProcessFlag('github-dev')) {
     return require('../webpack.dev.js');
-  } else if (helpers.hasProcessFlag('google-prod')) {
+  } else if (helpers.hasProcessFlag('github-prod')) {
     return require('../webpack.prod.js');
   } else {
     throw new Error('Invalid compile option.');
