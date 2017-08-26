@@ -48,13 +48,13 @@
     "ng-login",
     "auth"
   ],
-  "homepage": "https://github.com/openfact/ngo-login-client",
+  "homepage": "https://github.com/openfact-ui/ngo-login-client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openfact/ngo-login-client.git"
+    "url": "https://github.com/openfact-ui/ngo-login-client.git"
   },
   "bugs": {
-    "url": "https://github.com/openfact/ngo-login-client/issues"
+    "url": "https://github.com/openfact-ui/ngo-login-client/issues"
   },
   "engines": {
     "node": ">= 6.9.1",
