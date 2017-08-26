@@ -23,25 +23,13 @@ export class AuthenticationService {
   // Tokens
   readonly google = 'google';
   readonly microsoft = 'microsoft';
-  public googleToken: Observable<string>;
-  public microsoftToken: Observable<string>;
 
   // Keycloak utils
-  public parsedToken: any;
-  public accessToken: string;
   public isAuthenticated: boolean;
-  public profile: any;
 
   private apiUrl: string;
   private ssoUrl: string;
   private realm: string;
-
-  // Tokens config
-  private refreshInterval: number;
-  private clearTimeoutId: any;
-  private refreshTokens: Subject<Token> = new Subject();
-
-  private KC_APP_INITIALIZED_OBS = 'kc_initialization';
 
   constructor(
     private broadcaster: Broadcaster,
@@ -58,49 +46,29 @@ export class AuthenticationService {
 
     Keycloak.authenticatedObs.subscribe(auth => {
       this.isAuthenticated = auth;
-      this.parsedToken = Keycloak.tokenParsed;
-      this.accessToken = Keycloak.accessToken;
 
       console.log('APP: authentication status changed...');
 
       if (this.isAuthenticated) {
-        let token = this.parsedToken;
-
-        let expiresIn = Keycloak.tokenParsed['exp'] - (new Date().getTime() / 1000) + Keycloak.timeSkew;
-        this.setupRefreshTimer(expiresIn);
-
         // make sure old tokens are cleared out when we login again
-        localStorage.removeItem(this.google + '_token');
-        localStorage.removeItem(this.microsoft + '_token');
-
-        // kick off initial token refresh
-        this.refreshTokens.next({ 'access_token': this.accessToken } as Token);
+        localStorage.setItem('auth_token', this.getAccessToken());
+        localStorage.setItem('refresh_token', this.getRefreshToken());
 
         this.onLogIn();
       }
     });
 
-    Keycloak.initializedObs.subscribe((result) => {
-      if (result) {
-        const appInitialization = localStorage.getItem(this.KC_APP_INITIALIZED_OBS);
-        localStorage.removeItem(this.KC_APP_INITIALIZED_OBS);
-        if (appInitialization) {
-          this.broadcaster.broadcast('appinitialized', true);
-        } else {
-          localStorage.setItem(this.KC_APP_INITIALIZED_OBS, 'preInitialization');
-          broadcaster.broadcast('appinitialized', false);
-        }
-      }
-    });
-
   }
 
-  logIn(options?: any): void {
+  /**
+   * Call to KC login
+   * @param options
+   */
+  public logIn(options?: any): void {
     Keycloak.login(options);
   }
 
-  onLogIn() {
-    console.log('User have just loggedin');
+  protected onLogIn() {
     this.broadcaster.broadcast('loggedin', 1);
   }
 
@@ -108,9 +76,9 @@ export class AuthenticationService {
    * Broadcast logout, clear session data and call KC logout
    * @param options
    */
-  logout(options?: any) {
-    this.broadcaster.broadcast('logout', 1);
+  public logout(options?: any) {
     this.clearSessionData();
+    this.broadcaster.broadcast('logout', 1);
     Keycloak.logout(options);
   }
 
@@ -121,42 +89,51 @@ export class AuthenticationService {
     return this.isAuthenticated;
   }
 
-  isOfflineToken(): boolean {
-    return Keycloak.refreshTokenParsed.typ === 'Offline';
-  }
-
   getAccessToken() {
-    if (this.isLoggedIn()) return this.accessToken;
+    if (this.isLoggedIn()) return Keycloak.accessToken;
   }
 
   getRefreshToken(): string {
-    return Keycloak.refreshToken;
+    if (this.isLoggedIn()) return Keycloak.refreshToken;
+  }
+
+  isRefreshTokenOffline(): boolean {
+    if (this.isLoggedIn()) return Keycloak.refreshTokenParsed.typ === 'Offline';
   }
 
   /**
    * Return Google token
    */
   getGoogleToken(): Observable<string> {
-    return this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
+    if (this.isLoggedIn()) {
+      return this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
+    }
   }
 
   /**
    * Return Microsoft token
    */
   getMicrosoftToken(): Observable<string> {
-    return this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
+    if (this.isLoggedIn()) {
+      return this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
+    }
   }
 
+  /**
+   * Create Federated Token
+   * @param broker
+   * @param processToken
+   */
   private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
-    headers.set('Authorization', `Bearer ${token.access_token}`);
+    headers.set('Authorization', `Bearer ${this.getAccessToken()}`);
     let options = new RequestOptions({ headers: headers });
     return this.http.get(tokenUrl, options)
       .map(response => processToken(response))
       .catch(response => {
         if (response.status === 400) {
-          this.broadcaster.broadcast('noFederatedToken', res);
+          this.broadcaster.broadcast('noFederatedToken', response);
         }
         return Observable.of({} as Token);
       })
