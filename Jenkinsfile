@@ -1,5 +1,6 @@
 #!/usr/bin/groovy
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
+@Library('github.com/openfactio/openfact-pipeline-library@master')
 def utils = new io.fabric8.Utils()
 def org = 'openfact-ui'
 def repo = 'ngo-login-client'
