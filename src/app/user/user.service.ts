@@ -50,9 +50,7 @@ export class UserService {
       if (val === 'loggedIn') {
         return this.http
           .get(this.userUrl, { headers: this.headers, withCredentials: true })
-          .map(response => {
-            return cloneDeep(response.json() as User);
-          });
+          .map(response => cloneDeep(response.json().data as User));
       } else {
         // Otherwise, we clear the user
         return Observable.of({} as User);
@@ -106,9 +104,9 @@ export class UserService {
   }
 
   /**
-   *
+   * 
    * Filter users by username
-   *
+   * 
    * @returns Observable<User[]>
    */
 

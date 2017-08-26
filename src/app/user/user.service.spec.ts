@@ -22,12 +22,12 @@ describe('Service: User service', () => {
         {
           provide: Http,
           useFactory: (backend: MockBackend,
-                       options: BaseRequestOptions) => new Http(backend, options),
+            options: BaseRequestOptions) => new Http(backend, options),
           deps: [MockBackend, BaseRequestOptions]
         },
         {
           provide: AUTH_API_URL,
-          useValue: "http://example.com"
+          useValue: 'http://example.com'
         },
         Broadcaster,
         Logger
@@ -45,25 +45,25 @@ describe('Service: User service', () => {
   ));
 
   let testUser = {
-    "attributes": {
-      "fullName": "name",
-      "imageURL": "",
-      "username": "myUser"
+    'attributes': {
+      'fullName': 'name',
+      'imageURL': '',
+      'username': 'myUser'
     },
-    "id": "userId",
-    "type": "userType"
+    'id': 'userId',
+    'type': 'userType'
   };
 
   let testUsers = [
     testUser,
     {
-      "attributes": {
-        "fullName": "secondUser",
-        "imageURL": "",
-        "username": "secondUser"
+      'attributes': {
+        'fullName': 'secondUser',
+        'imageURL': '',
+        'username': 'secondUser'
       },
-      "id": "secondUserId",
-      "type": "userType"
+      'id': 'secondUserId',
+      'type': 'userType'
     }
   ];
 
