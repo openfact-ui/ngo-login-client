@@ -27,6 +27,7 @@ export class AuthenticationService {
   // Keycloak utils
   public isAuthenticated: boolean;
 
+  //
   private apiUrl: string;
   private ssoUrl: string;
   private realm: string;
