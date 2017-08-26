@@ -24,8 +24,7 @@ describe('Service: Authentication service', () => {
                 MockBackend,
                 {
                     provide: Http,
-                    useFactory: (backend: MockBackend,
-                        options: BaseRequestOptions) => new Http(backend, options),
+                    useFactory: (backend: MockBackend, options: BaseRequestOptions) => new Http(backend, options),
                     deps: [MockBackend, BaseRequestOptions]
                 },
                 {
@@ -34,7 +33,7 @@ describe('Service: Authentication service', () => {
                 },
                 {
                     provide: REALM,
-                    useValue: 'fabric8'
+                    useValue: 'openfact'
                 },
                 {
                     provide: SSO_API_URL,
