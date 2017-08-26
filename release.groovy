@@ -30,7 +30,7 @@ def cd (b){
     }
 
     stage('release'){
-        def published = npmRelease{
+        def published = npmReleaseOpenfact{
             branch = b
         }
         return published

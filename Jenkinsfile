@@ -4,7 +4,7 @@
 def utils = new io.fabric8.Utils()
 def org = 'openfact-ui'
 def repo = 'ngo-login-client'
-openfactUINode{
+fabric8UINode{
   ws {
     git "https://github.com/${org}/${repo}.git"
     readTrusted 'release.groovy'
