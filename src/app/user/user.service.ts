@@ -48,10 +48,12 @@ export class UserService {
     ).switchMap(val => {
       // If it's a login event, then we need to retreive the user's details
       if (val === 'loggedIn') {
+        console.log('Getting logged user');
         return this.http
           .get(this.userUrl, { headers: this.headers, withCredentials: true })
           .map(response => cloneDeep(response.json().data as User));
       } else {
+        console.log('Cleaning logged user');
         // Otherwise, we clear the user
         return Observable.of({} as User);
       }
