@@ -3,6 +3,7 @@ export { LoginModule } from './login.module';
 export { REALM } from './src/app/shared/realm-token';
 export { AUTH_API_URL } from './src/app/shared/auth-api';
 export { SSO_API_URL } from './src/app/shared/sso-api';
+export { SSO_CLIENT_NAME } from './src/app/shared/sso-client-name';
 export { OfUserName } from './src/app/user/of-user-name.pipe';
 export { AuthenticationService } from './src/app/auth/authentication.service';
 export { HttpService } from './src/app/shared/http.service';
