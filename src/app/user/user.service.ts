@@ -68,7 +68,7 @@ export class UserService {
    */
   getUserByUserId(userId: string): Observable<User> {
     return this.http
-      .get(`${this.usersUrl}/${userId}`, { headers: this.headers })
+      .get(`${this.usersUrl}/${userId}`, { headers: this.headers, withCredentials: true })
       .map(response => {
         return response.json().data as User;
       });
@@ -95,7 +95,7 @@ export class UserService {
   getUsersBySearchString(search: string): Observable<User[]> {
     if (search && search !== '') {
       return this.http
-        .get(this.searchUrl + '/users?q=' + search, { headers: this.headers })
+        .get(this.searchUrl + '/users?q=' + search, { headers: this.headers, withCredentials: true })
         .map(response => {
           return response.json().data as User[];
         });
@@ -112,7 +112,7 @@ export class UserService {
 
   filterUsersByUsername(username: string): Observable<User[]> {
     return this.http
-      .get(`${this.usersUrl}?filter[username]=${username}`, { headers: this.headers })
+      .get(`${this.usersUrl}?filter[username]=${username}`, { headers: this.headers, withCredentials: true })
       .map(response => {
         return response.json().data as User[];
       });
