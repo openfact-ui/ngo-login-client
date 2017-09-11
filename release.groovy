@@ -48,5 +48,4 @@ def updateDownstreamProjects(v){
         autoMerge = true
     }
 }
-
 return this

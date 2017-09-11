@@ -49,7 +49,7 @@ export class UserService {
       // If it's a login event, then we need to retreive the user's details
       if (val === 'loggedIn') {
         return this.http
-          .get(this.userUrl, { headers: this.headers, withCredentials: true })
+          .get(this.userUrl, { headers: this.headers })
           .map(response => cloneDeep(response.json().data as User));
       } else {
         // Otherwise, we clear the user
@@ -68,7 +68,7 @@ export class UserService {
    */
   getUserByUserId(userId: string): Observable<User> {
     return this.http
-      .get(`${this.usersUrl}/${userId}`, { headers: this.headers, withCredentials: true })
+      .get(`${this.usersUrl}/${userId}`, { headers: this.headers })
       .map(response => {
         return response.json().data as User;
       });
@@ -95,7 +95,7 @@ export class UserService {
   getUsersBySearchString(search: string): Observable<User[]> {
     if (search && search !== '') {
       return this.http
-        .get(this.searchUrl + '/users?q=' + search, { headers: this.headers, withCredentials: true })
+        .get(this.searchUrl + '/users?q=' + search, { headers: this.headers })
         .map(response => {
           return response.json().data as User[];
         });
@@ -112,7 +112,7 @@ export class UserService {
 
   filterUsersByUsername(username: string): Observable<User[]> {
     return this.http
-      .get(`${this.usersUrl}?filter[username]=${username}`, { headers: this.headers, withCredentials: true })
+      .get(`${this.usersUrl}?filter[username]=${username}`, { headers: this.headers })
       .map(response => {
         return response.json().data as User[];
       });
