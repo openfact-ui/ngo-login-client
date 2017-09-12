@@ -58,7 +58,6 @@ describe('Service: Authentication service', () => {
     authenticationService.logout();
   });
 
-  // tslint:disable-next-line:max-line-length
   let tokenJson = `{"access_token":"token","expires_in":1800,"refresh_expires_in":1800,"refresh_token":"refresh","token_type":"bearer"}`;
 
   it('Can log on', (done) => {

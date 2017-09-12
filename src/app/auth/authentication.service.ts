@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, RequestOptionsArgs } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Observable, Subject } from 'rxjs';
 import { Broadcaster } from 'ngo-base';
@@ -16,6 +16,8 @@ export interface ProcessTokenResponse {
 @Injectable()
 export class AuthenticationService {
 
+  public openShiftToken: Observable<string>;
+  public gitHubToken: Observable<string>;
   private refreshInterval: number;
   private apiUrl: string;
   private ssoUrl: string;
@@ -28,7 +30,8 @@ export class AuthenticationService {
     @Inject(AUTH_API_URL) apiUrl: string,
     @Inject(SSO_API_URL) ssoUrl: string,
     @Inject(REALM) realm: string,
-    private http: Http) {
+    private http: Http
+  ) {
     this.apiUrl = apiUrl;
     this.ssoUrl = ssoUrl;
     this.realm = realm;
@@ -94,11 +97,10 @@ export class AuthenticationService {
   refreshToken() {
     if (this.isLoggedIn()) {
       let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options: RequestOptions = new RequestOptions({ headers: headers });
       let refreshTokenUrl = this.apiUrl + 'login/refresh';
       let refreshToken = localStorage.getItem('refresh_token');
       let body = JSON.stringify({ 'refresh_token': refreshToken });
-      this.http.post(refreshTokenUrl, body, options)
+      this.http.post(refreshTokenUrl, body, headers)
         .map((response: Response) => {
           let responseJson = response.json();
           let token = this.processTokenResponse(responseJson.token);
@@ -142,7 +144,7 @@ export class AuthenticationService {
           }
           return Observable.of({} as Token);
         })
-        .do((token) => localStorage.setItem(broker + '_token', token.access_token))
+        .do(token => localStorage.setItem(broker + '_token', token.access_token))
         .map(t => t.access_token);
     })
       .publishReplay(1);
