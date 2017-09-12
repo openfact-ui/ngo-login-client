@@ -16,8 +16,6 @@ export interface ProcessTokenResponse {
 @Injectable()
 export class AuthenticationService {
 
-  public openShiftToken: Observable<string>;
-  public gitHubToken: Observable<string>;
   private refreshInterval: number;
   private apiUrl: string;
   private ssoUrl: string;
