@@ -25,16 +25,16 @@ describe('Service: Authentication service', () => {
         {
           provide: Http,
           useFactory: (backend: MockBackend,
-                       options: BaseRequestOptions) => new Http(backend, options),
+            options: BaseRequestOptions) => new Http(backend, options),
           deps: [MockBackend, BaseRequestOptions]
         },
         {
           provide: AUTH_API_URL,
-          useValue: 'http://example.com'
+          useValue: "http://example.com"
         },
         {
           provide: REALM,
-          useValue: 'openfact'
+          useValue: "openfact"
         },
         {
           provide: SSO_API_URL,
@@ -109,7 +109,7 @@ describe('Service: Authentication service', () => {
     mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
-          body: JSON.stringify({token: tokenJson}),
+          body: JSON.stringify({ token: tokenJson }),
           status: 201
         })
       ));
@@ -156,7 +156,7 @@ describe('Service: Authentication service', () => {
   });*/
 
   /*it('Openshift token processing - not logged in', async(() => {
-      mockService.connections.subscribe((connection: any) => {
+    mockService.connections.subscribe((connection: any) => {
       connection.mockRespond(new Response(
         new ResponseOptions({
           body: tokenJson,

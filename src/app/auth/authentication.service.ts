@@ -61,7 +61,7 @@ export class AuthenticationService {
     if (token) {
       if (!this.clearTimeoutId) {
         // kick off initial token refresh
-        this.refreshTokens.next({ 'access_token': token } as Token);
+        this.refreshTokens.next({ "access_token": token } as Token);
         this.setupRefreshTimer(15);
       }
       return true;
