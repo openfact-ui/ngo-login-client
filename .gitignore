@@ -1,5 +1,8 @@
 # @AngularClass
 
+package-lock.json
+yarn.lock
+
 # compiled output
 /dist
 /dist-watch
