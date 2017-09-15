@@ -148,25 +148,19 @@ export class AuthenticationService {
   }
 
   private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
-    let res = this.refreshTokens.switchMap(token => {
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
-      headers.set('Authorization', `Bearer ${token.access_token}`);
-      let options = new RequestOptions({ headers: headers });
-      return this.http.get(tokenUrl, options)
-        .map(response => processToken(response))
-        .catch(response => {
-          if (response.status === 400) {
-            this.broadcaster.broadcast('noFederatedToken', res);
-          }
-          return Observable.of({} as Token);
-        })
-        .do(token => localStorage.setItem(broker + '_token', token.access_token))
-        .map(t => t.access_token);
-    })
-      .publishReplay(1);
-    res.connect();
-    return res;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
+    headers.set('Authorization', `Bearer ${this.getToken()}`);
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(tokenUrl, options)
+      .map(response => processToken(response))
+      .catch(response => {
+        if (response.status === 400) {
+          this.broadcaster.broadcast('noFederatedToken', response);
+        }
+        return Observable.of({} as Token);
+      })
+      .map(t => t.access_token);
   }
 
   private queryAsToken(query: string): Token {
