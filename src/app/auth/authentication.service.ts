@@ -129,7 +129,7 @@ export class AuthenticationService {
     return token;
   }
 
-  private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
+  public createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
     let res = this.refreshTokens.switchMap(token => {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
