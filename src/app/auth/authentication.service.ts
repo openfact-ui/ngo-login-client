@@ -16,6 +16,10 @@ export interface ProcessTokenResponse {
 @Injectable()
 export class AuthenticationService {
 
+  // Tokens
+  readonly google = 'google';
+  readonly microsoft = 'microsoft';
+
   private refreshInterval: number;
   private apiUrl: string;
   private ssoUrl: string;
@@ -73,6 +77,20 @@ export class AuthenticationService {
     if (this.isLoggedIn()) return localStorage.getItem('auth_token');
   }
 
+  /**
+   * Return Google token
+   */
+  getGoogleToken(): Observable<string> {
+    return this.createFederatedToken(this.google, (response: Response) => response.json() as Token);
+  }
+
+  /**
+   * Return Microsoft token
+   */
+  getMicrosoftToken(): Observable<string> {
+    return this.createFederatedToken(this.microsoft, (response: Response) => response.json() as Token);
+  }
+
   setupRefreshTimer(refreshInSeconds: number) {
     if (!this.clearTimeoutId) {
       // refresh should be required to be less than ten minutes measured in seconds
@@ -91,7 +109,7 @@ export class AuthenticationService {
       }
     }
   }
-
+  
   refreshToken() {
     if (this.isLoggedIn()) {
       let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -129,7 +147,7 @@ export class AuthenticationService {
     return token;
   }
 
-  public createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
+  private createFederatedToken(broker: string, processToken: ProcessTokenResponse): Observable<string> {
     let res = this.refreshTokens.switchMap(token => {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let tokenUrl = this.ssoUrl + `auth/realms/${this.realm}/broker/${broker}/token`;
