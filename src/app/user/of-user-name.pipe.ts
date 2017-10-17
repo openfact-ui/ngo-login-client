@@ -4,7 +4,7 @@ import { User } from './user';
 
 // tslint:disable-next-line:use-pipe-transform-interface
 @Pipe({ name: 'ofUserName', pure: true })
-export class ofUserName implements PipeTransform {
+export class OfUserName implements PipeTransform {
   // TODO: find out if "null = null" is needed or can just be "null"
   transform(userObj: User | null = null, notFound: string = 'User not found'): string {
     if (typeof (userObj) === 'undefined' || userObj === null) {
