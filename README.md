@@ -1,7 +1,9 @@
 # ngo-login-client
 
-[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngo-login-client-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngo-login-client-npm-publish-build-master/)
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-ngo-login-client-npm-publish-build-master)](https://ci.centos.org/view/Devtools/job/devtools-ngo-login-client-npm-publish-build-master/)  
+[![Build Status](https://jenkins.cd.test.openfact.io/job/openfact-ui/job/ngo-login-client/job/master/)](https://jenkins.cd.test.openfact.io/job/openfact-ui/job/ngo-login-client/job/master/) 
 [![npm version](https://badge.fury.io/js/ngo-login-client.svg)](https://badge.fury.io/js/ngo-login-client) 
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) 
 
 Auth and User services for Angular v2 and up
 
@@ -20,7 +22,7 @@ This library does not run on it's own. It must be imported.
 
 `npm install ngo-login-client`
 
-There are several services and a couple of models used by them available.
+There are several services and a couple of models used by them available.  
 
     AuthenticationService    
     BroadcasterService    
@@ -49,7 +51,7 @@ export let authApiUrlProvider = {
 ````
 
 NOTE: `ApiLocatorService` is a service that we use to construct API URLs using patterns determined
-by our application architecture, you can implement this part however you like.
+by our application architecture, you can implement this part however you like.  
 
 Finally you need to register `authApiUrlProvider` with a module or a component.
  

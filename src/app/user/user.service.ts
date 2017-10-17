@@ -108,9 +108,9 @@ export class UserService {
   }
 
   /**
-   * 
+   *
    * Filter users by username
-   * 
+   *
    * @returns Observable<User[]>
    */
   filterUsersByUsername(username: string): Observable<User[]> {

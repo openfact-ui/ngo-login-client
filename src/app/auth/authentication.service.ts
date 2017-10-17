@@ -109,7 +109,7 @@ export class AuthenticationService {
       }
     }
   }
-  
+
   refreshToken() {
     if (this.isLoggedIn()) {
       let headers = new Headers({ 'Content-Type': 'application/json' });
